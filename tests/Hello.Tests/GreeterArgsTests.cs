@@ -25,4 +25,63 @@ public class GreeterArgsTests
     [Fact]
     public void Shout_before_name_shouts_the_whole_line() =>
         Assert.Equal("HELLO, ADA!", GreeterArgs.Run(["--shout", "--name", "Ada"]));
+
+    private static string[] Lines(string output) =>
+        output.Split(["\r\n", "\n"], StringSplitOptions.None);
+
+    [Fact]
+    public void Times_three_greets_three_times()
+    {
+        var lines = Lines(GreeterArgs.Run(["--times", "3"]));
+        Assert.Equal(3, lines.Length);
+        Assert.All(lines, line => Assert.Equal("Hello, world!", line));
+    }
+
+    [Theory]
+    [InlineData("0")]
+    [InlineData("-2")]
+    public void Times_zero_or_negative_greets_once(string value)
+    {
+        var lines = Lines(GreeterArgs.Run(["--times", value]));
+        Assert.Equal(["Hello, world!"], lines);
+    }
+
+    [Theory]
+    [InlineData("abc")]
+    [InlineData("99999999999")]
+    public void Times_non_number_greets_once(string value)
+    {
+        var lines = Lines(GreeterArgs.Run(["--times", value]));
+        Assert.Equal(["Hello, world!"], lines);
+    }
+
+    [Fact]
+    public void Times_without_value_greets_once()
+    {
+        var lines = Lines(GreeterArgs.Run(["--times"]));
+        Assert.Equal(["Hello, world!"], lines);
+    }
+
+    [Fact]
+    public void Times_followed_by_shout_does_not_swallow_shout()
+    {
+        var lines = Lines(GreeterArgs.Run(["--times", "--shout"]));
+        Assert.Equal(["HELLO, WORLD!"], lines);
+    }
+
+    [Fact]
+    public void Name_shout_times_greets_shouting_three_times()
+    {
+        var lines = Lines(GreeterArgs.Run(["--name", "Ada", "--shout", "--times", "3"]));
+        Assert.Equal(3, lines.Length);
+        Assert.All(lines, line => Assert.Equal("HELLO, ADA!", line));
+    }
+
+    [Fact]
+    public void Times_shout_name_greets_shouting_three_times()
+    {
+        var lines = Lines(GreeterArgs.Run(["--times", "3", "--shout", "--name", "Ada"]));
+        Assert.Equal(3, lines.Length);
+        Assert.All(lines, line => Assert.Equal("HELLO, ADA!", line));
+    }
 }
