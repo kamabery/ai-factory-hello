@@ -1,1 +1,1 @@
-Console.WriteLine(Hello.Greeting.Text());
+Console.WriteLine(Hello.GreeterArgs.Run(args));
