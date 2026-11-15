@@ -8,3 +8,12 @@ dotnet build Hello.slnx
 dotnet test Hello.slnx
 dotnet run --project src/Hello
 ```
+
+## Usage
+
+```
+dotnet run --project src/Hello                 # Hello, world!
+dotnet run --project src/Hello -- --name Ada   # Hello, Ada!
+```
+
+`--name <name>` says who to greet; with no name (or a blank one) the app greets the world.
