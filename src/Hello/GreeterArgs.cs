@@ -7,7 +7,8 @@ public static class GreeterArgs
     {
         string? name = null;
         var shout = false;
-        var times = 1;
+        // No arguments at all greets three times; any argument (even an unrecognised one) keeps the default of 1.
+        var times = args.Count == 0 ? 3 : 1;
         for (var i = 0; i < args.Count; i++)
         {
             if (args[i] == "--name" && i + 1 < args.Count)

@@ -7,8 +7,18 @@ public class GreeterArgsTests
         Assert.Equal("Hello, Ada!", GreeterArgs.Run(["--name", "Ada"]));
 
     [Fact]
-    public void No_arguments_greets_the_world() =>
-        Assert.Equal("Hello, world!", GreeterArgs.Run([]));
+    public void No_arguments_greets_the_world_three_times()
+    {
+        var lines = Lines(GreeterArgs.Run([]));
+        Assert.Equal(["Hello, world!", "Hello, world!", "Hello, world!"], lines);
+    }
+
+    [Fact]
+    public void Unrecognised_argument_greets_once()
+    {
+        var lines = Lines(GreeterArgs.Run(["foo"]));
+        Assert.Equal(["Hello, world!"], lines);
+    }
 
     [Fact]
     public void Name_flag_without_value_greets_the_world() =>
